@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Gaa Mapper Alpha</title>
+	     <!-- <link href="format.css" rel="stylesheet" type="text/css"> -->
+         <style>
+         .top{
+            border: 2px solid;
+         }
+         .instructions{
+            text-shadow: .1em .1em .2em gray;
+         }
+         nav {
+           background: linear-gradient(to bottom, #4c4c4c 0%,#666666 0%,#595959 0%,#2c2c2c 29%,#000000 51%,#111111 60%,#2b2b2b 76%,#1c1c1c 100%,#131313 100%,#474747 100%); /* W3C */
+            padding: 5px;
+         }
+         a.nav{
+            text-decoration: none;
+            color: white;
+            margin-right: 10px;
+         }
+         nav :hover {
+            background: linear-gradient(to bottom, #4c4c4c 0%,#666666 0%,#595959 0%,#2c2c2c 29%,#595959 50%,#111111 60%,#2b2b2b 76%,#3f3f3f 100%,#131313 100%,#474747 100%); /* W3C */
+            color: gray;
+            text-decoration: none;
+         }
+         </style>
+         <link rel="stylesheet" href="print.css" type="text/css" media="print" />
+	</head>
+<body>
+
+    <nav>
+        <a id="instructions" class="nav" href="#" >Instructions</a>
+        <a class="nav" href="#" onclick="window.print(); return false;">Print Maps</a>
+        <a id="Save" class="nav" href="#">Save Current Map data</a>
+    </nav>
+
+    <div class="top">
+        <p>Version .4</p>
+
+        <p class="instructions">In order to use this app you must first go to <a href="https://mapsengine.google.com/map" target="_blank">mapsengine.google.com/map</a> to create a map to be displayed here. After you sign in with a google account. You will then be able to make your map points and import your csv or xls files. Note: you will need to make sure they are formatted correctly otherwise google will not understand them. Forcing you to either enter the addresses manually, or modifying the file to make the fields correctly formatted.</br></br>
+        
+        Once you have made the map, click on the share link and then copy and paste the URL inside of the input box below. This will display the map in a frame inside this page. You can then manipulate its postion and zoom level to your liking and then print it. Each frame should show up on it's own printed page. Use the print preview to see how each page will come out. Google chrome seems best for this but other browsers should work as well. Each URL you add will be displayed in a new frame on this page. You can use this to print out different sections of the same map by adding the same URL multiple times and then moving that frame's perspective to a different part of the map.</br></br>
+
+        Typing the word "clear" into the box will get rid of the frames you have. Their states <b>ARE NOT SAVED</b> in anyway. You can save the map data itself for later use on the page you create the maps from. This will allow you to redisplay them later. Be aware the more addresses you put into a map the longer the list on the left will be. This list will obscure part of your map. Nothing can be done about this within this app. For best results print the maps in landscape view. You can quickly do this by clicking "Print maps" on the top bar
+
+        </p>
+
+        <form ></br>
+            <p>Enter the URL of the map you want to print from below. Hit enter once you paste it inside the box.</p>
+            <input type="text" style="width:450px;"/></form>
+    </div>
+    
+    <div class="iframes print">
+        <ul></ul>
+    </div>
+
+<!--<iframe src="https://mapsengine.google.com/map/u/0/embed?mid=zGO_qJfbQbHs.kH2TkoSPZfcI" width="1280" height="960"></iframe> -->
+
+<script src="http://code.jquery.com/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".instructions").hide();
+        $("#instructions").click(function(){
+            $(".instructions").toggle(250);
+        });
+    });
+</script>
+
+<script>var socket = io.connect('http://mc-stanfordvm:80');
+
+        socket.on('new message', function(msg) {
+            event.preventdefault
+            console.dir( msg );
+
+            $('ul').append('<iframe src=\"' +  msg + "\" width=\"1280\" height=\"960\">" + "</iframe>");
+        });
+        
+        $('form').on('submit', function() {
+            event.preventDefault();
+            var text = $('input').val();
+            $('input').val('');
+            if (text==="clear"){
+                $('iframe').remove();
+            }
+            else{
+               socket.emit('new message', text);
+            }
+            return false;
+       });
+
+        $("#Save").click(function(){
+            
+        })
+
+        </script>
+
+
+
+	<!-- this page is procedurally generated above here-->
+	</body>
+</html>

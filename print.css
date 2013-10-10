@@ -1,0 +1,10 @@
+@media print{
+
+	html body nav div p {
+		display: none;
+	}
+	.print{
+		page-break-before: avoid;
+		visibility:visible;
+	}
+}
